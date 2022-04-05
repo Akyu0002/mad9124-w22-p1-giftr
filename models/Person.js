@@ -16,6 +16,7 @@ const personSchema = new mongoose.Schema(
     imageUrl: { type: String, max: 1024 },
   },
   {
+    // Adding timestamps will add the createdAt & updatedAt properties.
     timestamps: true,
   }
 );
