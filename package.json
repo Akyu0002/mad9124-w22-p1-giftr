@@ -1,12 +1,12 @@
 {
-  "name": "MAD9124-W21-A3-JWT-AUTH",
+  "name": "MAD9124-W22-P1-GIFTR",
   "version": "0.1.0",
-  "description": "JWT Authentication",
+  "description": "GIFTR Back End",
   "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=MAD9124-W21-EX8-AUTH* nodemon server.js"
+    "start": "DEBUG=MAD9124-W22-P1-GIFTR* nodemon server.js"
   },
   "keywords": [
     "MAD9124",
@@ -15,7 +15,10 @@
     "mongoose",
     "jwt"
   ],
-  "author": "Tibet Akyurekli <akyu0002@algonquinlive.com>",
+  "authors": [
+    "Tibet Akyurekli <akyu0002@algonquinlive.com>",
+    "Nhat Son Tran <tran0460@algonquinlive.com"
+  ],
   "contributors": [
     "Robert McKenney <mckennr@algonquincollege.com>"
   ],
