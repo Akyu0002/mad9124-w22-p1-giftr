@@ -10,7 +10,7 @@ const router = express.Router();
 router.use("/", authUser, sanitizeBody);
 
 // Gift POST route.
-router.post("/", authAdmin, (req, res, next) => {
+router.post("/:id/gifts", authAdmin, (req, res, next) => {
   new Gift(req.sanitizedBody)
     .save()
     .then((newGift) => res.status(201).json(formatResponseData(newGift)))
