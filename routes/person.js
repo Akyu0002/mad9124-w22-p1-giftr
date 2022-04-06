@@ -25,16 +25,16 @@ router.post("/", authAdmin, (req, res, next) => {
     .catch(next);
 });
 
-// Student GET with ID route.
+// Person GET with ID route.
 router.get("/:id", async (req, res, next) => {
   try {
-    const student = await Student.findById(req.params.id);
-    if (!student) {
+    const person = await Person.findById(req.params.id);
+    if (!person) {
       throw new ResourceNotFoundError(
         `We could not find a student with id: ${req.params.id}`
       );
     }
-    res.json(formatResponseData(student));
+    res.json(formatResponseData(person));
   } catch (err) {
     next(err);
   }
