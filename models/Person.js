@@ -9,7 +9,7 @@ const personSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      //default: , // Not sure what to set this as for "Current User"
+      default: "Current User", // Not sure what to set this as for "Current User"
     },
     sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     gifts: [giftSchema],
