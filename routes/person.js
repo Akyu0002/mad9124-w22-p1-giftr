@@ -13,7 +13,7 @@ router.use("/", authUser, sanitizeBody);
 
 // Student GET route.
 router.get("/", async (req, res) => {
-  const collection = await Student.find();
+  const collection = await Person.find();
   res.send({ data: formatResponseData(collection) });
 });
 
