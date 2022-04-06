@@ -10,7 +10,7 @@ const router = express.Router();
 router.use("/", authUser, sanitizeBody);
 
 // Gift POST route.
-router.post("/", authAdmin, (req, res, next) => {
+router.post("/:id/gifts", authAdmin, (req, res, next) => {
   new Gift(req.sanitizedBody)
     .save()
     .then((newGift) => res.status(201).json(formatResponseData(newGift)))
@@ -41,11 +41,11 @@ const update =
     }
   };
 
-// Gift PUT Route
-router.patch("/:id", authAdmin, update(false));
+// Gift PATCH Route
+router.patch("/:id/gifts/:giftId", authAdmin, update(false));
 
 // Gift DELETE route.
-router.delete("/:id", authAdmin, async (req, res, next) => {
+router.delete("/:id/gifts/:giftId", authAdmin, async (req, res, next) => {
   try {
     const document = await Gift.findByIdAndRemove(req.params.id);
     if (!document) {
