@@ -45,7 +45,7 @@ const update =
 router.patch("/:id/gifts/:giftId", authAdmin, update(false));
 
 // Gift DELETE route.
-router.delete("/:id", authAdmin, async (req, res, next) => {
+router.delete("/:id/gifts/:giftId", authAdmin, async (req, res, next) => {
   try {
     const document = await Gift.findByIdAndRemove(req.params.id);
     if (!document) {
