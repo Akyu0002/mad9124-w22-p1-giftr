@@ -24,9 +24,6 @@ const schema = new mongoose.Schema(
     },
     password: { type: String, trim: true, maxlength: 70, required: true },
   },
-  {
-    timestamps: true,
-  }
 );
 
 schema.methods.generateAuthToken = function () {
