@@ -70,13 +70,13 @@ router.put("/:id", authAdmin, update(true));
 // Person PATCH route.
 router.patch("/:id", authAdmin, update(false));
 
-// Student DELETE route.
+// Person DELETE route.
 router.delete("/:id", authAdmin, async (req, res, next) => {
   try {
-    const document = await Student.findByIdAndRemove(req.params.id);
+    const document = await Person.findByIdAndRemove(req.params.id);
     if (!document) {
       throw new ResourceNotFoundError(
-        `We could not find a student with id: ${req.params.id}`
+        `We could not find a person with id: ${req.params.id}`
       );
     }
     res.send({ data: formatResponseData(document) });
