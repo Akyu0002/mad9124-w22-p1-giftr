@@ -64,10 +64,10 @@ const update =
     }
   };
 
-// Student PUT route.
+// Person PUT route.
 router.put("/:id", authAdmin, update(true));
 
-// Student PATCH route.
+// Person PATCH route.
 router.patch("/:id", authAdmin, update(false));
 
 // Student DELETE route.
