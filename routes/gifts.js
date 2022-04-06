@@ -42,9 +42,6 @@ const update =
   };
 
 // Course PUT Route
-router.put("/:id", authAdmin, update(true));
-
-// Course PUT Route
 router.patch("/:id", authAdmin, update(false));
 
 // Course DELETE route.
