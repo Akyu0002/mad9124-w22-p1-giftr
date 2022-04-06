@@ -9,40 +9,19 @@ const router = express.Router();
 
 router.use("/", authUser, sanitizeBody);
 
-// Course GET Route
-router.get("/", async (req, res) => {
-  const collection = await Course.find();
-  res.send({ data: formatResponseData(collection) });
-});
-
-// Course POST route.
+// Gift POST route.
 router.post("/", authAdmin, (req, res, next) => {
-  new Course(req.sanitizedBody)
+  new Gift(req.sanitizedBody)
     .save()
-    .then((newCourse) => res.status(201).json(formatResponseData(newCourse)))
+    .then((newGift) => res.status(201).json(formatResponseData(newGift)))
     .catch(next);
-});
-
-// Course GET with ID route.
-router.get("/:id", async (req, res, next) => {
-  try {
-    const document = await Course.findById(req.params.id).populate("students");
-    if (!document) {
-      throw new ResourceNotFoundError(
-        `We could not find a course with id: ${req.params.id}`
-      );
-    }
-    res.json({ data: formatResponseData(document) });
-  } catch (err) {
-    next(err);
-  }
 });
 
 const update =
   (overwrite = false) =>
   async (req, res, next) => {
     try {
-      const document = await Course.findByIdAndUpdate(
+      const document = await Gift.findByIdAndUpdate(
         req.params.id,
         req.sanitizedBody,
         {
@@ -53,7 +32,7 @@ const update =
       );
       if (!document) {
         throw new ResourceNotFoundError(
-          `We could not find a course with id: ${req.params.id}`
+          `We could not find a gift with id: ${req.params.id}`
         );
       }
       res.send({ data: formatResponseData(document) });
@@ -62,19 +41,16 @@ const update =
     }
   };
 
-// Course PUT Route
-router.put("/:id", authAdmin, update(true));
-
-// Course PUT Route
+// Gift PUT Route
 router.patch("/:id", authAdmin, update(false));
 
-// Course DELETE route.
+// Gift DELETE route.
 router.delete("/:id", authAdmin, async (req, res, next) => {
   try {
-    const document = await Course.findByIdAndRemove(req.params.id);
+    const document = await Gift.findByIdAndRemove(req.params.id);
     if (!document) {
       throw new ResourceNotFoundError(
-        `We could not find a course with id: ${req.params.id}`
+        `We could not find a gift with id: ${req.params.id}`
       );
     }
     res.send({ data: formatResponseData(document) });
@@ -84,7 +60,7 @@ router.delete("/:id", authAdmin, async (req, res, next) => {
 });
 
 // formatResponseData Function
-function formatResponseData(payload, type = "courses") {
+function formatResponseData(payload, type = "gifts") {
   if (payload instanceof Array) {
     return payload.map((resource) => format(resource));
   } else {
