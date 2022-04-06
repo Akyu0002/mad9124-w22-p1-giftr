@@ -11,17 +11,17 @@ const router = express.Router();
 
 router.use("/", authUser, sanitizeBody);
 
-// Student GET route.
+// Person GET route.
 router.get("/", async (req, res) => {
   const collection = await Person.find();
   res.send({ data: formatResponseData(collection) });
 });
 
-// Student POST route.
+// Person POST route.
 router.post("/", authAdmin, (req, res, next) => {
-  new Student(req.sanitizedBody)
+  new Person(req.sanitizedBody)
     .save()
-    .then((newStudent) => res.status(201).json(formatResponseData(newStudent)))
+    .then((newPerson) => res.status(201).json(formatResponseData(newPerson)))
     .catch(next);
 });
 
