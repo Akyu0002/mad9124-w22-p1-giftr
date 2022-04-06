@@ -1,12 +1,10 @@
-import createDebug from "debug";
 import sanitizeBody from "../middleware/sanitizeBody.js";
-import Course from "../models/Course.js";
+import Gift from "../models/Gift.js";
 import express from "express";
 import authUser from "../middleware/auth.js";
 import authAdmin from "../middleware/authAdmin.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
 
-const debug = createDebug("MAD9124-W21-A3-JWT-AUTH:routes:students");
 const router = express.Router();
 
 router.use("/", authUser, sanitizeBody);
