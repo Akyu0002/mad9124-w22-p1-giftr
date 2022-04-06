@@ -1,6 +1,6 @@
 import createDebug from "debug";
 import sanitizeBody from "../middleware/sanitizeBody.js";
-import Student from "../models/Student.js";
+import Person from "../models/Person.js";
 import express from "express";
 import authUser from "../middleware/auth.js";
 import authAdmin from "../middleware/authAdmin.js";
