@@ -9,33 +9,12 @@ const router = express.Router();
 
 router.use("/", authUser, sanitizeBody);
 
-// Course GET Route
-router.get("/", async (req, res) => {
-  const collection = await Course.find();
-  res.send({ data: formatResponseData(collection) });
-});
-
 // Course POST route.
 router.post("/", authAdmin, (req, res, next) => {
   new Course(req.sanitizedBody)
     .save()
     .then((newCourse) => res.status(201).json(formatResponseData(newCourse)))
     .catch(next);
-});
-
-// Course GET with ID route.
-router.get("/:id", async (req, res, next) => {
-  try {
-    const document = await Course.findById(req.params.id).populate("students");
-    if (!document) {
-      throw new ResourceNotFoundError(
-        `We could not find a course with id: ${req.params.id}`
-      );
-    }
-    res.json({ data: formatResponseData(document) });
-  } catch (err) {
-    next(err);
-  }
 });
 
 const update =
