@@ -19,8 +19,8 @@ app.use(sanitizeMongo());
 
 // Routes
 app.use("/auth", authRouter);
-app.use("/api/courses", giftRouter);
-app.use("/api/students", peopleRouter);
+app.use("/api/people", giftRouter);
+app.use("/api/people", peopleRouter);
 
 app.use(logError);
 app.use(handleError);
