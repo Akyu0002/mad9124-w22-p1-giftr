@@ -1,6 +1,6 @@
 import createDebug from "debug";
 import sanitizeBody from "../middleware/sanitizeBody.js";
-import Student from "../models/Student.js";
+import Person from "../models/Person.js";
 import express from "express";
 import authUser from "../middleware/auth.js";
 import authAdmin from "../middleware/authAdmin.js";
@@ -11,30 +11,30 @@ const router = express.Router();
 
 router.use("/", authUser, sanitizeBody);
 
-// Student GET route.
+// Person GET route.
 router.get("/", async (req, res) => {
-  const collection = await Student.find();
+  const collection = await Person.find();
   res.send({ data: formatResponseData(collection) });
 });
 
-// Student POST route.
+// Person POST route.
 router.post("/", authAdmin, (req, res, next) => {
-  new Student(req.sanitizedBody)
+  new Person(req.sanitizedBody)
     .save()
-    .then((newStudent) => res.status(201).json(formatResponseData(newStudent)))
+    .then((newPerson) => res.status(201).json(formatResponseData(newPerson)))
     .catch(next);
 });
 
-// Student GET with ID route.
+// Person GET with ID route.
 router.get("/:id", async (req, res, next) => {
   try {
-    const student = await Student.findById(req.params.id);
-    if (!student) {
+    const person = await Person.findById(req.params.id);
+    if (!person) {
       throw new ResourceNotFoundError(
         `We could not find a student with id: ${req.params.id}`
       );
     }
-    res.json(formatResponseData(student));
+    res.json(formatResponseData(person));
   } catch (err) {
     next(err);
   }
@@ -44,7 +44,7 @@ const update =
   (overwrite = false) =>
   async (req, res, next) => {
     try {
-      const document = await Student.findByIdAndUpdate(
+      const document = await Person.findByIdAndUpdate(
         req.params.id,
         req.sanitizedBody,
         {
@@ -55,7 +55,7 @@ const update =
       );
       if (!document) {
         throw new ResourceNotFoundError(
-          `We could not find a student with id: ${req.params.id}`
+          `We could not find a person with id: ${req.params.id}`
         );
       }
       res.send({ data: formatResponseData(document) });
@@ -64,19 +64,19 @@ const update =
     }
   };
 
-// Student PUT route.
+// Person PUT route.
 router.put("/:id", authAdmin, update(true));
 
-// Student PATCH route.
+// Person PATCH route.
 router.patch("/:id", authAdmin, update(false));
 
-// Student DELETE route.
+// Person DELETE route.
 router.delete("/:id", authAdmin, async (req, res, next) => {
   try {
-    const document = await Student.findByIdAndRemove(req.params.id);
+    const document = await Person.findByIdAndRemove(req.params.id);
     if (!document) {
       throw new ResourceNotFoundError(
-        `We could not find a student with id: ${req.params.id}`
+        `We could not find a person with id: ${req.params.id}`
       );
     }
     res.send({ data: formatResponseData(document) });
@@ -86,7 +86,7 @@ router.delete("/:id", authAdmin, async (req, res, next) => {
 });
 
 // formatResponseData Function
-function formatResponseData(payload, type = "students") {
+function formatResponseData(payload, type = "people") {
   if (payload instanceof Array) {
     return payload.map((resource) => format(resource));
   } else {
