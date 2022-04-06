@@ -41,8 +41,8 @@ const update =
     }
   };
 
-// Gift PUT Route
-router.patch("/:id", authAdmin, update(false));
+// Gift PATCH Route
+router.patch("/:id/gifts/:giftId", authAdmin, update(false));
 
 // Gift DELETE route.
 router.delete("/:id", authAdmin, async (req, res, next) => {
