@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { giftSchema } from "./Gift.js";
+import { GiftSchema } from "../models/Gift.js";
 
 const personSchema = new mongoose.Schema(
   {
@@ -12,12 +12,11 @@ const personSchema = new mongoose.Schema(
       default: "Current User", // Not sure what to set this as for "Current User"
     },
     sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    gifts: [giftSchema],
+    gifts: [GiftSchema],
     imageUrl: { type: String, max: 1024 },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   }
-  // {
   //   // Adding timestamps will add the createdAt & updatedAt properties.
   //   timestamps: true,
   // }

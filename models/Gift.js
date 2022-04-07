@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const giftSchema = new mongoose.Schema({
+export const GiftSchema = new mongoose.Schema({
   name: { type: String, required: true, min: 4, max: 64 },
   price: {
     type: Number,
@@ -13,6 +13,5 @@ const giftSchema = new mongoose.Schema({
   storeProductURL: { type: String, max: 1024 },
 });
 
-const Model = mongoose.model("Gift", giftSchema);
-
-export default Model;
+const Gifts = mongoose.model("Gift", GiftSchema);
+export default Gifts;
