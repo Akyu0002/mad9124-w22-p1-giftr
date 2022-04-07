@@ -4,16 +4,26 @@ import express from "express";
 import authUser from "../middleware/auth.js";
 import authAdmin from "../middleware/authAdmin.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
+import Person from "../models/Person.js";
 
 const router = express.Router();
 
 router.use("/", authUser, sanitizeBody);
 
 // Gift POST route.
-router.post("/:id/gifts", authAdmin, (req, res, next) => {
-  new Gift(req.sanitizedBody)
+router.post("/:id/gifts", async (req, res, next) => {
+  const newGift = new Gift(req.sanitizedBody);
+  const personId = req.url.split("/")[1];
+  const person = await Person.findById(personId);
+  let newObj = person;
+  await newGift
     .save()
-    .then((newGift) => res.status(201).json(formatResponseData(newGift)))
+    .then(async (newGift) => {
+      newObj.gifts.push(newGift);
+      await Person.findByIdAndUpdate(personId, newObj).then((person) => {
+        res.status(201).json(formatResponseData(newGift));
+      });
+    })
     .catch(next);
 });
 
