@@ -20,7 +20,7 @@ router.post("/:id/gifts", async (req, res, next) => {
     .save()
     .then(async (newGift) => {
       newObj.gifts.push(newGift);
-      await Person.findByIdAndUpdate(personId, newObj).then((person) => {
+      await Person.findByIdAndUpdate(personId, newObj).then(() => {
         res.status(201).json(formatResponseData(newGift));
       });
     })
@@ -42,7 +42,7 @@ const update =
       );
       if (!document) {
         throw new ResourceNotFoundError(
-          `We could not find a gift with id: ${req.params.id}`
+          `We could not find a gift with id: ${req.params.giftId}`
         );
       }
       res.send({ data: formatResponseData(document) });
@@ -55,12 +55,14 @@ const update =
 router.patch("/:id/gifts/:giftId", update(false));
 
 // Gift DELETE route.
-router.delete("/:id/gifts/:giftId", authAdmin, async (req, res, next) => {
+router.delete("/:id/gifts/:giftId", async (req, res, next) => {
   try {
-    const document = await Gift.findByIdAndRemove(req.params.id);
+    const document = await Gift.findByIdAndRemove(req.params.giftId);
+    console.log(Person);
+    // const person = await Person.find
     if (!document) {
       throw new ResourceNotFoundError(
-        `We could not find a gift with id: ${req.params.id}`
+        `We could not find a gift with id: ${req.params.giftId}`
       );
     }
     res.send({ data: formatResponseData(document) });
