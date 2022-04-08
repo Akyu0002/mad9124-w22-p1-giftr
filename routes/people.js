@@ -14,7 +14,7 @@ router.use("/", authUser, sanitizeBody);
 
 // Person GET route.
 router.get("/", async (req, res) => {
-  const collection = await Person.find().populate("gifts");
+  const collection = await Person.find();
   res.send({ data: formatResponseData(collection) });
 });
 

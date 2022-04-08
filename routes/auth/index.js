@@ -57,6 +57,29 @@ router.post("/tokens", sanitizeBody, async (req, res) => {
   res.status(201).send({ data: { token: user.generateAuthToken() } });
 });
 
+// Update Password Route
+router.patch("/auth/user/me", sanitizeBody, async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      req.sanitizedBody,
+      {
+        new: true,
+        overwrite: false,
+        runValidators: true,
+      }
+    );
+    if (!user) {
+      throw new ResourceNotFoundError(
+        `We could not find a user with id: ${req.params.id}`
+      );
+    }
+    res.send({ data: formatResponseData(user) });
+  } catch (err) {
+    next(err);
+  }
+});
+
 function formatResponseData(payload, type = "users") {
   if (payload instanceof Array) {
     return { data: payload.map((resource) => format(resource)) };

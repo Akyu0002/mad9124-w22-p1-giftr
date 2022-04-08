@@ -20,9 +20,8 @@ router.post("/:id/gifts", async (req, res, next) => {
     .save()
     .then(async (newGift) => {
       newObj.gifts.push(newGift);
-      await Person.findByIdAndUpdate(personId, newObj).then((person) => {
-        res.status(201).json(formatResponseData(newGift));
-      });
+      await Person.findByIdAndUpdate(personId, newObj);
+      res.status(201).json(formatResponseData(newGift));
     })
     .catch(next);
 });
