@@ -13,14 +13,14 @@ router.use("/", authUser, sanitizeBody);
 // Gift POST route.
 router.post("/:id/gifts", async (req, res, next) => {
   const newGift = new Gift(req.sanitizedBody);
-  const personId = req.url.split("/")[1];
+  const personId = req.params.id;
   const person = await Person.findById(personId);
   let newObj = person;
   await newGift
     .save()
     .then(async (newGift) => {
       newObj.gifts.push(newGift);
-      await Person.findByIdAndUpdate(personId, newObj).then((person) => {
+      await Person.findByIdAndUpdate(personId, newObj).then(() => {
         res.status(201).json(formatResponseData(newGift));
       });
     })
@@ -32,7 +32,7 @@ const update =
   async (req, res, next) => {
     try {
       const document = await Gift.findByIdAndUpdate(
-        req.params.id,
+        req.params.giftId,
         req.sanitizedBody,
         {
           new: true,
@@ -42,7 +42,7 @@ const update =
       );
       if (!document) {
         throw new ResourceNotFoundError(
-          `We could not find a gift with id: ${req.params.id}`
+          `We could not find a gift with id: ${req.params.giftId}`
         );
       }
       res.send({ data: formatResponseData(document) });
@@ -52,15 +52,24 @@ const update =
   };
 
 // Gift PATCH Route
-router.patch("/:id/gifts/:giftId", authAdmin, update(false));
+router.patch("/:id/gifts/:giftId", update(false));
 
 // Gift DELETE route.
-router.delete("/:id/gifts/:giftId", authAdmin, async (req, res, next) => {
+router.delete("/:id/gifts/:giftId", async (req, res, next) => {
+  const personId = req.params.id;
+  const person = await Person.findById(personId);
+  let newObj = person;
   try {
-    const document = await Gift.findByIdAndRemove(req.params.id);
+    newObj.gifts.forEach((gift, index) => {
+      gift.id === req.params.giftId ? newObj.gifts.splice(index, 1) : 0;
+    });
+    const document = await Gift.findByIdAndRemove(req.params.giftId);
+    await Person.findByIdAndUpdate(personId, newObj);
+    console.log(Person);
+    // const person = await Person.find
     if (!document) {
       throw new ResourceNotFoundError(
-        `We could not find a gift with id: ${req.params.id}`
+        `We could not find a gift with id: ${req.params.giftId}`
       );
     }
     res.send({ data: formatResponseData(document) });
