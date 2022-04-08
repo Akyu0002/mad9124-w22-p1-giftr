@@ -13,7 +13,7 @@ router.use("/", authUser, sanitizeBody);
 // Gift POST route.
 router.post("/:id/gifts", async (req, res, next) => {
   const newGift = new Gift(req.sanitizedBody);
-  const personId = req.url.split("/")[1];
+  const personId = req.params.id;
   const person = await Person.findById(personId);
   let newObj = person;
   await newGift
