@@ -32,7 +32,7 @@ const update =
   async (req, res, next) => {
     try {
       const document = await Gift.findByIdAndUpdate(
-        req.params.id,
+        req.params.giftId,
         req.sanitizedBody,
         {
           new: true,
@@ -52,7 +52,7 @@ const update =
   };
 
 // Gift PATCH Route
-router.patch("/:id/gifts/:giftId", authAdmin, update(false));
+router.patch("/:id/gifts/:giftId", update(false));
 
 // Gift DELETE route.
 router.delete("/:id/gifts/:giftId", authAdmin, async (req, res, next) => {
