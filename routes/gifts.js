@@ -56,8 +56,15 @@ router.patch("/:id/gifts/:giftId", update(false));
 
 // Gift DELETE route.
 router.delete("/:id/gifts/:giftId", async (req, res, next) => {
+  const personId = req.params.id;
+  const person = await Person.findById(personId);
+  let newObj = person;
   try {
+    newObj.gifts.forEach((gift, index) => {
+      gift.id === req.params.giftId ? newObj.gifts.splice(index, 1) : 0;
+    });
     const document = await Gift.findByIdAndRemove(req.params.giftId);
+    await Person.findByIdAndUpdate(personId, newObj);
     console.log(Person);
     // const person = await Person.find
     if (!document) {
