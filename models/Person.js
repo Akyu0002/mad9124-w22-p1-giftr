@@ -13,6 +13,7 @@ const personSchema = new mongoose.Schema(
     },
     sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     gifts: [GiftSchema],
+    // gifts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Gift" }],
     imageUrl: { type: String, max: 1024 },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

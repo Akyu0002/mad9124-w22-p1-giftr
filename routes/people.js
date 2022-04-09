@@ -14,7 +14,7 @@ router.use("/", authUser, sanitizeBody);
 
 // Person GET route.
 router.get("/", async (req, res) => {
-  const collection = await Person.find().populate("gifts");
+  const collection = await Person.find();
   res.send({ data: formatResponseData(collection) });
 });
 
@@ -32,7 +32,7 @@ router.post("/", async (req, res, next) => {
 // Person GET with ID route.
 router.get("/:id", async (req, res, next) => {
   try {
-    const person = await Person.findById(req.params.id).populate("gifts");
+    const person = await Person.findById(req.params.id);
     if (!person) {
       throw new ResourceNotFoundError(
         `We could not find a student with id: ${req.params.id}`
