@@ -1,10 +1,14 @@
+// Middleware
 import sanitizeBody from "../middleware/sanitizeBody.js";
-import Gift from "../models/Gift.js";
-import express from "express";
 import authUser from "../middleware/auth.js";
-import authAdmin from "../middleware/authOwner.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
+
+// Models
+import Gift from "../models/Gift.js";
 import Person from "../models/Person.js";
+
+// Plugins
+import express from "express";
 
 const router = express.Router();
 
@@ -45,6 +49,16 @@ const update =
           `We could not find a gift with id: ${req.params.giftId}`
         );
       }
+      const person = await Person.findById(req.params.id);
+      person.gifts.id(req.params.giftId).name = req.sanitizedBody.name;
+      person.gifts.id(req.params.giftId).price = req.sanitizedBody.price;
+      person.gifts.id(req.params.giftId).imageUrl = req.sanitizedBody.imageUrl;
+      person.gifts.id(req.params.giftId).storeName =
+        req.sanitizedBody.storeName;
+      person.gifts.id(req.params.giftId).storeProductURL =
+        req.sanitizedBody.storeProductURL;
+      person.markModified("person.gifts");
+      person.save();
       res.send({ data: formatResponseData(document) });
     } catch (err) {
       next(err);
