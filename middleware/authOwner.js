@@ -1,8 +1,9 @@
 import User from "../models/User.js";
+import Person from "../models/Person.js";
 
 export default async function (req, res, next) {
-  const user = await User.findById(req.user._id);
-  if (user.isAdmin === true) {
+  const person = await Person.findById(req.params.id);
+  if (person.owner === req.user._id) {
     next();
   } else {
     return res.status(403).send({
