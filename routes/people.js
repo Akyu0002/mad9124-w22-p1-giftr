@@ -3,7 +3,7 @@ import sanitizeBody from "../middleware/sanitizeBody.js";
 import Person from "../models/Person.js";
 import express from "express";
 import authUser from "../middleware/auth.js";
-import authAdmin from "../middleware/authAdmin.js";
+import authAdmin from "../middleware/authOwner.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
 import User from "../models/User.js";
 
