@@ -38,20 +38,20 @@ router.patch("/users/me", sanitizeBody, authenticate, async (req, res) => {
 // Log the user in
 router.post("/tokens", sanitizeBody, async (req, res) => {
   const { email, password } = req.sanitizedBody;
-  let didSucceed;
+  // let didSucceed;
   const user = await User.authenticate(email, password);
 
-  if (user) didSucceed = true;
-  else didSucceed = false;
+  // if (user) didSucceed = true;
+  // else didSucceed = false;
 
-  const loginInfo = {
-    username: email,
-    ipAddress: req.ip,
-    didSucceed,
-    createdAt: Date.now(),
-  };
-  const newLoginInfo = new AuthenticationAttempts(loginInfo);
-  await newLoginInfo.save();
+  // const loginInfo = {
+  //   username: email,
+  //   ipAddress: req.ip,
+  //   didSucceed,
+  //   createdAt: Date.now(),
+  // };
+  // const newLoginInfo = new AuthenticationAttempts(loginInfo);
+  // await newLoginInfo.save();
 
   if (!user) {
     return res.status(401).send({
