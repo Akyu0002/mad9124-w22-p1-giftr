@@ -9,7 +9,6 @@ const debug = createDebug("MAD9124-W21-A3-JWT-AUTH:auth");
 const router = express.Router();
 
 router.use("/", sanitizeBody);
-
 // Creating / Registering a New User
 router.post("/users", sanitizeBody, (req, res, next) => {
   new User(req.sanitizedBody)
@@ -19,10 +18,21 @@ router.post("/users", sanitizeBody, (req, res, next) => {
 });
 
 // Retrieve the currently logged-in user.
-router.get("/user/me", authenticate, async (req, res) => {
+router.get("/users/me", authenticate, async (req, res) => {
   const user = await User.findById(req.user._id).select("-password -__V");
 
   res.json(formatResponseData(user));
+});
+
+// Update the currently logged-in user's password
+router.patch("/users/me", sanitizeBody, authenticate, async (req, res) => {
+  const { password } = req.sanitizedBody;
+  const user = await User.findById(req.user._id);
+
+  user.password = password;
+  await user.save();
+
+  res.status(201).send("Password updated!");
 });
 
 // Log the user in
