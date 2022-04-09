@@ -3,7 +3,7 @@ import sanitizeBody from "../middleware/sanitizeBody.js";
 import Person from "../models/Person.js";
 import express from "express";
 import authUser from "../middleware/auth.js";
-import authAdmin from "../middleware/authOwner.js";
+import authOwner from "../middleware/authOwner.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
 import User from "../models/User.js";
 
@@ -69,13 +69,13 @@ const update =
   };
 
 // Person PUT route.
-router.put("/:id", authAdmin, update(true));
+router.put("/:id", update(true));
 
 // Person PATCH route.
 router.patch("/:id", update(false));
 
 // Person DELETE route.
-router.delete("/:id", authAdmin, async (req, res, next) => {
+router.delete("/:id", authOwner, async (req, res, next) => {
   try {
     const document = await Person.findByIdAndRemove(req.params.id);
     if (!document) {
