@@ -23,13 +23,6 @@ const schema = new mongoose.Schema(
       },
     },
     password: { type: String, trim: true, maxlength: 70, required: true },
-    isAdmin: {
-      type: Boolean,
-      trim: true,
-      maxlength: 70,
-      required: true,
-      default: false,
-    },
   },
   {
     timestamps: true,
@@ -53,12 +46,23 @@ schema.statics.authenticate = async function (email, password) {
   const badHash = `$2b$${saltRounds}$invalidusernameaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`;
   const hashedPassword = user ? user.password : badHash;
   const passwordDidMatch = await bcrypt.compare(password, hashedPassword);
+  console.log(email, password);
   return passwordDidMatch ? user : null;
 };
 
 schema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, saltRounds);
+  next();
+});
+
+schema.pre("findOneAndUpdate", async function (next) {
+  if (this._update.password) {
+    this._update.password = await bcrypt.hash(
+      this._update.password,
+      saltRounds
+    );
+  }
   next();
 });
 
