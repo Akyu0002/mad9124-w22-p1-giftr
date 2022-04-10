@@ -3,13 +3,11 @@ import sanitizeBody from "../../middleware/sanitizeBody.js";
 import express from "express";
 import createDebug from "debug";
 import authenticate from "../../middleware/auth.js";
-import AuthenticationAttempts from "../../models/Authentaction_attempts.js";
 
 const debug = createDebug("MAD9124-W21-A3-JWT-AUTH:auth");
 const router = express.Router();
 
 router.use("/", sanitizeBody);
-
 // Creating / Registering a New User
 router.post("/users", sanitizeBody, (req, res, next) => {
   new User(req.sanitizedBody)
@@ -19,29 +17,28 @@ router.post("/users", sanitizeBody, (req, res, next) => {
 });
 
 // Retrieve the currently logged-in user.
-router.get("/user/me", authenticate, async (req, res) => {
+router.get("/users/me", authenticate, async (req, res) => {
   const user = await User.findById(req.user._id).select("-password -__V");
-
+  console.log("************** ", req.user, " **************");
   res.json(formatResponseData(user));
+});
+
+// Update the currently logged-in user's password
+router.patch("/users/me", authenticate, sanitizeBody, async (req, res) => {
+  const { password } = req.sanitizedBody;
+
+  const newUser = await User.findByIdAndUpdate(req.user._id, {
+    password: password,
+  }).then((user) => {
+    console.log(user);
+  });
+  res.status(201).send("Password updated!");
 });
 
 // Log the user in
 router.post("/tokens", sanitizeBody, async (req, res) => {
   const { email, password } = req.sanitizedBody;
-  let didSucceed;
   const user = await User.authenticate(email, password);
-
-  if (user) didSucceed = true;
-  else didSucceed = false;
-
-  const loginInfo = {
-    username: email,
-    ipAddress: req.ip,
-    didSucceed,
-    createdAt: Date.now(),
-  };
-  const newLoginInfo = new AuthenticationAttempts(loginInfo);
-  await newLoginInfo.save();
 
   if (!user) {
     return res.status(401).send({

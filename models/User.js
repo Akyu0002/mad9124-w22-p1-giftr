@@ -6,23 +6,28 @@ import validator from "validator";
 
 const saltRounds = 14;
 
-const schema = new mongoose.Schema({
-  firstName: { type: String, trim: true, maxlength: 64, required: true },
-  lastName: { type: String, trim: true, maxlength: 64 },
-  email: {
-    type: String,
-    trim: true,
-    maxlength: 512,
-    required: true,
-    unique: true,
-    set: (value) => value.toLowerCase(),
-    validate: {
-      validator: (value) => validator.isEmail(value),
-      message: (props) => `${props.value} is not a valid email address.`,
+const schema = new mongoose.Schema(
+  {
+    firstName: { type: String, trim: true, maxlength: 64, required: true },
+    lastName: { type: String, trim: true, maxlength: 64 },
+    email: {
+      type: String,
+      trim: true,
+      maxlength: 512,
+      required: true,
+      unique: true,
+      set: (value) => value.toLowerCase(),
+      validate: {
+        validator: (value) => validator.isEmail(value),
+        message: (props) => `${props.value} is not a valid email address.`,
+      },
     },
+    password: { type: String, trim: true, maxlength: 70, required: true },
   },
-  password: { type: String, trim: true, maxlength: 70, required: true },
-});
+  {
+    timestamps: true,
+  }
+);
 
 schema.methods.generateAuthToken = function () {
   const payload = { user: { _id: this._id } };
@@ -41,12 +46,23 @@ schema.statics.authenticate = async function (email, password) {
   const badHash = `$2b$${saltRounds}$invalidusernameaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`;
   const hashedPassword = user ? user.password : badHash;
   const passwordDidMatch = await bcrypt.compare(password, hashedPassword);
+  console.log(email, password);
   return passwordDidMatch ? user : null;
 };
 
 schema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, saltRounds);
+  next();
+});
+
+schema.pre("findOneAndUpdate", async function (next) {
+  if (this._update.password) {
+    this._update.password = await bcrypt.hash(
+      this._update.password,
+      saltRounds
+    );
+  }
   next();
 });
 
