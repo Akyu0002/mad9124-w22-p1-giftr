@@ -11,7 +11,6 @@ export const GiftSchema = new mongoose.Schema({
   store: { type: Object },
   storeName: { type: String, max: 254 },
   storeProductURL: { type: String, max: 1024 },
-  storeAddress: { type: String, max: 200 },
 });
 
 const Gifts = mongoose.model("Gift", GiftSchema);
