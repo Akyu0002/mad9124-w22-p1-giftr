@@ -1,13 +1,16 @@
-import createDebug from "debug";
-import sanitizeBody from "../middleware/sanitizeBody.js";
+// Models
+import User from "../models/User.js";
 import Person from "../models/Person.js";
+
+// Plugin
 import express from "express";
+
+// Middleware
 import authUser from "../middleware/auth.js";
 import authOwner from "../middleware/authOwner.js";
+import sanitizeBody from "../middleware/sanitizeBody.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
-import User from "../models/User.js";
 
-const debug = createDebug("MAD9124-W21-A3-JWT-AUTH:routes:students");
 const router = express.Router();
 
 router.use("/", authUser, sanitizeBody);
@@ -35,7 +38,7 @@ router.get("/:id", async (req, res, next) => {
     const person = await Person.findById(req.params.id);
     if (!person) {
       throw new ResourceNotFoundError(
-        `We could not find a student with id: ${req.params.id}`
+        `We could not find a person with id: ${req.params.id}`
       );
     }
     res.json(formatResponseData(person));
