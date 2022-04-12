@@ -8,9 +8,10 @@ export const GiftSchema = new mongoose.Schema({
     default: 1000,
   },
   imageUrl: { type: String, min: 1024 },
-  store: { type: Object },
-  storeName: { type: String, max: 254 },
-  storeProductURL: { type: String, max: 1024 },
+  store: { type: Object ,
+    name: { type: String, max: 254 },
+    productURL: { type: String, max: 1024 },
+    },
 });
 
 const Gifts = mongoose.model("Gift", GiftSchema);

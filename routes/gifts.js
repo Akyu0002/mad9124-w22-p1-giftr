@@ -2,6 +2,7 @@
 import sanitizeBody from "../middleware/sanitizeBody.js";
 import authUser from "../middleware/auth.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
+import authGifts from "../middleware/authGifts.js"
 
 // Models
 import Gift from "../models/Gift.js";
@@ -15,7 +16,7 @@ const router = express.Router();
 router.use("/", authUser, sanitizeBody);
 
 // Gift POST route.
-router.post("/:id/gifts", async (req, res, next) => {
+router.post("/:id/gifts", authGifts, async (req, res, next) => {
   const newGift = new Gift(req.sanitizedBody);
   const personId = req.params.id;
   const person = await Person.findById(personId);
@@ -66,10 +67,10 @@ const update =
   };
 
 // Gift PATCH Route
-router.patch("/:id/gifts/:giftId", update(false));
+router.patch("/:id/gifts/:giftId", authGifts, update(false));
 
 // Gift DELETE route.
-router.delete("/:id/gifts/:giftId", async (req, res, next) => {
+router.delete("/:id/gifts/:giftId", authGifts, async (req, res, next) => {
   const personId = req.params.id;
   const person = await Person.findById(personId);
   try {
