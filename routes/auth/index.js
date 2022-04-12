@@ -7,7 +7,9 @@ import authenticate from "../../middleware/auth.js";
 const debug = createDebug("MAD9124-W21-A3-JWT-AUTH:auth");
 const router = express.Router();
 
+// Set middleware for all routes.
 router.use("/", sanitizeBody);
+
 // Creating / Registering a New User
 router.post("/users", sanitizeBody, (req, res, next) => {
   new User(req.sanitizedBody)
@@ -31,6 +33,8 @@ router.patch("/users/me", authenticate, sanitizeBody, async (req, res) => {
     password: password,
   }).then((user) => {
     console.log(user);
+    console.log("");
+    console.log(user.password);
   });
   res.status(201).send("Password updated!");
 });

@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Person from "../models/Person.js";
 
+// Checks to see if currently logged in user matches with the owner properties id.
 export default async function (req, res, next) {
   const person = await Person.findById(req.params.id);
   if (person.owner === req.user._id) {

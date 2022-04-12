@@ -2,7 +2,7 @@
 import sanitizeBody from "../middleware/sanitizeBody.js";
 import authUser from "../middleware/auth.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
-import authGifts from "../middleware/authGifts.js"
+import authGifts from "../middleware/authGifts.js";
 
 // Models
 import Gift from "../models/Gift.js";

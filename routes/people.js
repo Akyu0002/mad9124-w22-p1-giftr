@@ -1,13 +1,17 @@
-import createDebug from "debug";
+// Middleware
 import sanitizeBody from "../middleware/sanitizeBody.js";
-import Person from "../models/Person.js";
-import express from "express";
 import authUser from "../middleware/auth.js";
 import authOwner from "../middleware/authOwner.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
+
+// Models
+import Person from "../models/Person.js";
 import User from "../models/User.js";
 
-const debug = createDebug("MAD9124-W21-A3-JWT-AUTH:routes:students");
+// Plugins
+import express from "express";
+
+const debug = createDebug("MAD9124-W22-P1-GIFTR:routes:people");
 const router = express.Router();
 
 router.use("/", authUser, sanitizeBody);
@@ -22,6 +26,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res, next) => {
   const user = await User.findById(req.user._id);
   const newPerson = new Person(req.sanitizedBody);
+  console.log(newPerson);
   newPerson.owner = user._id;
   await newPerson
     .save()
