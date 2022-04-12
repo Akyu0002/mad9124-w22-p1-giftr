@@ -9,18 +9,15 @@ const personSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      default: "Current User", // Not sure what to set this as for "Current User"
     },
     sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     gifts: [GiftSchema],
-    // gifts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Gift" }],
     imageUrl: { type: String, max: 1024 },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
+  },
+  {
+    // Adding timestamps will add the createdAt & updatedAt properties.
+    timestamps: true,
   }
-  //   // Adding timestamps will add the createdAt & updatedAt properties.
-  //   timestamps: true,
-  // }
 );
 
 const Model = mongoose.model("Person", personSchema);
