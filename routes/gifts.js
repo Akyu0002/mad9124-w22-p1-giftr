@@ -2,7 +2,7 @@
 import sanitizeBody from "../middleware/sanitizeBody.js";
 import authUser from "../middleware/auth.js";
 import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
-import authGifts from "../middleware/authGifts.js"
+import authGifts from "../middleware/authGifts.js";
 
 // Models
 import Gift from "../models/Gift.js";
@@ -54,9 +54,9 @@ const update =
       person.gifts.id(req.params.giftId).name = req.sanitizedBody.name;
       person.gifts.id(req.params.giftId).price = req.sanitizedBody.price;
       person.gifts.id(req.params.giftId).imageUrl = req.sanitizedBody.imageUrl;
-      person.gifts.id(req.params.giftId).storeName =
+      person.gifts.id(req.params.giftId).store.name =
         req.sanitizedBody.storeName;
-      person.gifts.id(req.params.giftId).storeProductURL =
+      person.gifts.id(req.params.giftId).store.productURL =
         req.sanitizedBody.storeProductURL;
       person.markModified("person.gifts");
       person.save();
@@ -77,7 +77,7 @@ router.delete("/:id/gifts/:giftId", authGifts, async (req, res, next) => {
     const document = await Gift.findByIdAndRemove(req.params.giftId);
     person.gifts.id(req.params.giftId).remove();
     person.save();
-    console.log(Person);
+
     if (!document) {
       throw new ResourceNotFoundError(
         `We could not find a gift with id: ${req.params.giftId}`

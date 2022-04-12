@@ -1,7 +1,4 @@
-import createDebug from "debug";
 import xss from "xss";
-
-const debug = createDebug("MAD9124-W21-A3-AUTH:middleWare:sanitizeBody");
 
 const sanitize = (sourceString) => {
   return xss(sourceString, {
