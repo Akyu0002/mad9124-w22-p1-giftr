@@ -18,4 +18,4 @@ WORKDIR /MAD9124-W22-P1-GIFTR
 RUN npm install --unsafe-perm
 
 EXPOSE 80
-CMD node server.js
+CMD node app.js
