@@ -25,4 +25,6 @@ app.use("/api/people", peopleRouter);
 app.use(logError);
 app.use(handleError);
 
+app.get("/", (req, res) => res.send({ data: { healthStatus: "UP" } }));
+
 export default app;
