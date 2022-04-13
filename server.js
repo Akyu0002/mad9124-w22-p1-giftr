@@ -1,5 +1,6 @@
 import http from "http";
 import app from "./app.js";
+// import log from "/startup/logger.js";
 
 const httpServer = http.createServer(app);
 

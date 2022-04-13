@@ -4,12 +4,12 @@ import Person from "../models/Person.js";
 export default async function (req, res, next) {
   const person = await Person.findById(req.params.id);
   if (!person) {
-    return res.status(403).send({
+    return res.status(404).send({
       errors: [
         {
           status: "404",
-          title: "Person not found",
-          description: "We could not find a person with id: " + req.params.id,
+          title: "Person Not Found",
+          description: `We could not find a person with id: ${req.params.id}`,
         },
       ],
     });

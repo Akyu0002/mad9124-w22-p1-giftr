@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "stage": "NODE_ENV=stage API_JWTKEY=executeOrder66 nodemon server.js",
     "start": "DEBUG=MAD9124-W22-P1-GIFTR* nodemon server.js"
   },
   "keywords": [
@@ -26,6 +27,7 @@
   "private": true,
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "config": "^3.3.7",
     "debug": "^4.3.3",
     "express": "^4.17.3",
     "express-mongo-sanitize": "^2.2.0",

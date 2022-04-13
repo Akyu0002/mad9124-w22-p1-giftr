@@ -1,1 +1,4 @@
 {"level":"info","message":"Successfully connected to MongoDB ...","service":"GIFTR"}
+{"level":"info","message":"Successfully connected to MongoDB ...","service":"GIFTR"}
+{"level":"info","message":"Successfully connected to MongoDB ...","service":"GIFTR"}
+{"level":"info","message":"Connected to MongoDB @ w22-final-giftr...","module":"connectDB","service":"GIFTR"}
