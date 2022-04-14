@@ -9,7 +9,7 @@ COPY config/ /MAD9124-W22-P1-GIFTR/config/
 COPY exceptions/ /MAD9124-W22-P1-GIFTR/exceptions/
 COPY middleware/ /MAD9124-W22-P1-GIFTR/middleware/
 COPY models/ /MAD9124-W22-P1-GIFTR/models/
-COPY public/ /MAD9124-W22-P1-GIFTR/public/
+# COPY public/ /MAD9124-W22-P1-GIFTR/public/
 COPY routes/ /MAD9124-W22-P1-GIFTR/routes/
 COPY startup/ /MAD9124-W22-P1-GIFTR/startup/
 COPY server.js app.js package.json /MAD9124-W22-P1-GIFTR/
