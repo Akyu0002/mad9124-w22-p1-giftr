@@ -7,7 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "stage": "NODE_ENV=stage API_JWTKEY=executeOrder66 nodemon server.js",
-    "start": "DEBUG=MAD9124-W22-P1-GIFTR* nodemon server.js"
+ 
+    "start": "node server.js",
+    "start:dev": "nodemon server.js"
   },
   "keywords": [
     "MAD9124",
