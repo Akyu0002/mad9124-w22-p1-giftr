@@ -13,7 +13,7 @@ import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
 
 const router = express.Router();
 
-router.use("/", authUser, sanitizeBody);
+router.use("/", authUser);
 
 // Person GET route.
 router.get("/", async (req, res) => {
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
 });
 
 // Person POST route.
-router.post("/", async (req, res, next) => {
+router.post("/", sanitizeBody, async (req, res, next) => {
   const user = await User.findById(req.user._id);
   const newPerson = new Person(req.sanitizedBody);
   newPerson.owner = user._id;
@@ -64,6 +64,7 @@ const update =
         throw new ResourceNotFoundError(
           `We could not find a person with id: ${req.params.id}`
         );
+        s;
       }
       res.send({ data: formatResponseData(document) });
     } catch (err) {
@@ -72,10 +73,10 @@ const update =
   };
 
 // Person PUT route.
-router.put("/:id", update(true));
+router.put("/:id", sanitizeBody, update(true));
 
 // Person PATCH route.
-router.patch("/:id", update(false));
+router.patch("/:id", sanitizeBody, update(false));
 
 // Person DELETE route.
 router.delete("/:id", authOwner, async (req, res, next) => {

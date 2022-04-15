@@ -12,10 +12,10 @@ import express from "express";
 
 const router = express.Router();
 
-router.use("/", authUser, sanitizeBody);
+router.use("/", authUser);
 
 // Gift POST route.
-router.post("/:id/gifts", authGifts, async (req, res, next) => {
+router.post("/:id/gifts", authGifts, sanitizeBody, async (req, res, next) => {
   const newGift = new Gift(req.sanitizedBody);
   const personId = req.params.id;
   const person = await Person.findById(personId);
@@ -65,7 +65,7 @@ const update =
   };
 
 // Gift PATCH Route
-router.patch("/:id/gifts/:giftId", update(false));
+router.patch("/:id/gifts/:giftId", sanitizeBody, update(false));
 
 // Gift DELETE route.
 router.delete("/:id/gifts/:giftId", async (req, res, next) => {

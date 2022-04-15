@@ -6,11 +6,8 @@ import authenticate from "../../middleware/auth.js";
 
 const router = express.Router();
 
-// All routes
-router.use("/", sanitizeBody);
-
 // Creating / Registering a New User
-router.post("/users", (req, res, next) => {
+router.post("/users", sanitizeBody, (req, res, next) => {
   new User(req.sanitizedBody)
     .save()
     .then((newUser) => res.status(201).json(formatResponseData(newUser)))
@@ -24,7 +21,7 @@ router.get("/users/me", authenticate, async (req, res) => {
 });
 
 // Update the currently logged-in user's password
-router.patch("/users/me", authenticate, async (req, res) => {
+router.patch("/users/me", authenticate, sanitizeBody, async (req, res) => {
   const { password } = req.sanitizedBody;
 
   const newUser = await User.findByIdAndUpdate(req.user._id, {
@@ -34,7 +31,7 @@ router.patch("/users/me", authenticate, async (req, res) => {
 });
 
 // Log the user in
-router.post("/tokens", async (req, res) => {
+router.post("/tokens", sanitizeBody, async (req, res) => {
   const { email, password } = req.sanitizedBody;
   const user = await User.authenticate(email, password);
 
